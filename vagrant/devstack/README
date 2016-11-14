@@ -1,0 +1,39 @@
+Vagrant Devstack
+===============
+
+
+Start devstack
+--------------
+
+vagrant ssh
+sudo su - stack
+devstack/stack.sh
+
+
+Launch instance
+---------------
+
+
+source /opt/stack/devstack/openrc admin demo
+FLAVOR_ID=$(openstack flavor list | awk '/m1.tiny/{print $2}')
+IMAGE_ID=$(openstack image list | awk '/cirros/{print $2}' | head -n1)
+SERVER_ID=$(openstack server create --image $IMAGE_ID --flavor $FLAVOR_ID test2 | awk '/\| id/{print $4}')
+
+#create floating-ip
+FIP=$(openstack floating ip create public | awk '/floating_ip_address/{print $4}')
+openstack server add floating ip $SERVER_ID $FIP
+echo "Floating IP " $FIP
+
+# List all servers
+openstack server list
+
+# Open Security Groups
+secgroups=$(neutron security-group-list  | awk  '/default/ {print $2}')
+
+#Do this fora all default SecurityGroups, as devstack specifies one for each tenant
+for secgroup in $secgroups
+do
+ #add a Rule to the defautl SecurityGroup that allows all incomming IPv4 traffic  
+ neutron security-group-rule-create --direction=ingress --remote-ip-prefix=0.0.0.0/0 $secgroup
+done
+
