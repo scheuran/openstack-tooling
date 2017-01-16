@@ -1,0 +1,20 @@
+Taken from: https://github.com/openstack/requirements/blob/master/README.rst
+
+cd requirements/
+
+# Create a reference file (do this without your patch applied):
+
+generate-constraints -p /usr/bin/python2.7 -p /usr/bin/python3 \
+  -b blacklist.txt -r global-requirements.txt > baseline
+
+# Apply your patch and generate a new reference file:
+
+generate-constraints -p /usr/bin/python2.7 -p /usr/bin/python3 \
+  -b blacklist.txt -r global-requirements.txt > updated
+
+# Diff them:
+
+diff -p baseline updated
+
+# Apply the patch to upper-constraints.txt. This may require some fiddling.
+

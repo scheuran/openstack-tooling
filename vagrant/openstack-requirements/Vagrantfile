@@ -68,7 +68,6 @@ Vagrant.configure(2) do |config|
      sudo apt-get install -y git python-setuptools python-virtualenv
      git clone https://github.com/openstack/requirements.git
      sudo easy_install pip
-     sudo pip install -r requirements.txt -r test-requirements.txt
      sudo pip install bindep
      sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password your_password'
      sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password your_password'
@@ -76,6 +75,5 @@ Vagrant.configure(2) do |config|
      sudo apt-get install -y $(bindep -b)
      sudo chown vagrant:vagrant /home/vagrant/requirements/
      sudo pip install -egit+https://github.com/openstack/requirements.git#egg=openstack_requirements
-
    SHELL
 end
