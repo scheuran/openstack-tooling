@@ -64,5 +64,18 @@ Vagrant.configure(2) do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
+    sudo apt update
+    sudo apt install -y python-virtualenv git python-dev
+
+    virtualenv venv
+    source venv/bin/activate
+    pip install sphinx==1.3.5 Pygments==2.1.3 setuptools==20.1.1 docutils==0.12 mkdocs==0.15.0 mock==1.0.1 pillow==2.6.1 git+https://github.com/rtfd/readthedocs-sphinx-ext.git@0.6-alpha#egg=readthedocs-sphinx-ext sphinx-rtd-theme==0.1.9 "alabaster>=0.7,<0.8,!=0.7.5" commonmark==0.5.4 recommonmark==0.1.1
+
+    git clone https://github.com/openstack/networking-dpm.git
+    cd networking-dpm
+    sudo chown -R vagrant:vagrant .
+
+    pip install -r test-requirements.txt
+    python setup.py install
   SHELL
 end
