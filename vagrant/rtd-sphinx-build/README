@@ -1,0 +1,29 @@
+Start the vagrant virtual machine
+
+   $ vagrant up
+
+
+Update the doc/source/conf.py file with the content from an RTD build conf.py file
+On your RTD project
+
+* go to "Builds"
+
+* Select one
+
+* Click on "cat conf.py" and copy all the content starting from 
+
+  ###########################################################################
+  #          auto-created readthedocs.org specific configuration            #
+  ###########################################################################
+
+* Append it to your doc/source/conf.py
+
+Run the build
+
+    $ sphinx-build -T -E -b readthedocs -D language=en doc/source/ _build/html
+
+.. note::
+    The error "SphinxError: Builder name readthedocs not registered"
+    occurs when the conf.py file has not been updated. Part of this update is
+    enabling the "readthedocs" sphinx extension.
+   
